@@ -1,0 +1,53 @@
+(Install dependencies): This script sets up everything our application needs to run:
+
+#!/bin/bash: This is like telling the computer "Hey, run this file using bash" (it's called a shebang line).
+
+sudo yum install tomcat -y: Installs Tomcat (our Java application server) - the -y means "yes to all prompts" so it won't stop and ask questions.
+
+sudo yum -y install httpd: Installs Apache HTTP server - this is like the front desk receptionist for our web application.
+
+sudo cat << EOF > /etc/httpd/conf.d/tomcat_manager.conf: This starts a special block that writes multiple lines to a configuration file at once - like dictating a whole letter instead of typing it line by line.
+
+The lines between <VirtualHost *:80> and </VirtualHost> create a configuration file for Apache to act as a reverse proxy for Tomcat. This is like telling Apache: "When visitors come to our website, don't talk to them directly - instead, silently pass their requests to Tomcat who's running our actual application."
+
+ProxyRequests off: Tells Apache not to act as a general proxy for any website (a security measure).
+
+ProxyPreserveHost On: Makes sure Apache remembers who the original request was for.
+
+ProxyPass and ProxyPassReverse: These are the magic lines that actually connect Apache to our Tomcat application.
+
+EOF: Marks the end of our configuration block - everything between the first EOF and this one gets written to the file.
+-------------------------------------
+(start_server.sh): 
+
+Use systemctl as the command-line tool for controlling services on linux systems. 
+(It is the master control panel for all programs running in the background on your server)
+- start/stop services or configure start automatically on boot.
+
+
+What does each line in start_server.sh do?
+
+#!/bin/bash: This tells the system to use the bash shell to interpret this script.
+
+sudo systemctl start tomcat10: Fires up Tomcat (our Java application server) - like turning the key in the ignition.
+
+sudo systemctl enable tomcat10: Sets Tomcat to auto-start whenever the server reboots - like setting your car to automatically start every morning.
+
+sudo systemctl start httpd: Starts Apache HTTP server - turning on our web server frontend.
+
+sudo systemctl enable httpd: Sets Apache to auto-start on reboot too.
+
+-------------------------------------
+(stop_server.sh): stop web server services by checking if they're running
+
+Use pgrep to check for running processes of Apache (httpd) and Tomcat
+- check if Apache is running
+- stop Apache if it is active
+- Check if Tomcat is running
+- Stop Tomcat if it is active
+
+
+
+
+
+
