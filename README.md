@@ -1,4 +1,4 @@
-##CI/CD Architecture
+# CI/CD Architecture
 <img width="1227" height="442" alt="image" src="https://github.com/user-attachments/assets/9aa2dfb0-6c0f-4722-a7f3-bba586b5800c" />
 
 
