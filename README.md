@@ -1,3 +1,8 @@
+##CI/CD Architecture
+<img width="1227" height="442" alt="image" src="https://github.com/user-attachments/assets/9aa2dfb0-6c0f-4722-a7f3-bba586b5800c" />
+
+
+
 <img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
 
 # Set Up a Web App in the Cloud
