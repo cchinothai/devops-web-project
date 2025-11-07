@@ -2,7 +2,6 @@
 
 # Set Up a Web App in the Cloud
 
-**Project Link:** [View Project](http://learn.nextwork.org/projects/aws-devops-vscode)
 
 **Author:** Cody Chinothai  
 **Email:** cchinothai@gmail.com
