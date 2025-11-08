@@ -1,5 +1,6 @@
 # CI/CD Architecture
-<img width="1227" height="442" alt="image" src="https://github.com/user-attachments/assets/9aa2dfb0-6c0f-4722-a7f3-bba586b5800c" />
+<img width="2770" height="952" alt="image" src="https://github.com/user-attachments/assets/82366512-76eb-43f9-9b14-f9c289808e26" />
+
 
 
 
