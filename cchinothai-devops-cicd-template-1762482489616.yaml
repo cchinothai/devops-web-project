@@ -1,0 +1,288 @@
+---
+Metadata:
+  AWSToolsMetrics:
+    IaC_Generator: "arn:aws:cloudformation:us-east-2:765929771952:generatedTemplate/18a940c7-8375-4b3d-bb94-4d0a3c98eed2"
+Parameters:
+  GitHubRepoOwner:
+    Type: String
+    Description: GitHub repository owner
+    Default: "cchinothai"
+  GitHubRepo:
+    Type: String
+    Description: GitHub repository name
+    Default: "devops-web-project"
+Resources:
+  S3BucketS3devopscicdcchinothai:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::S3::Bucket"
+    DeletionPolicy: "Delete"
+    Properties:
+      PublicAccessBlockConfiguration:
+        RestrictPublicBuckets: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        BlockPublicAcls: true
+      BucketName: "s3-devops-cicd-cchinothai"
+      OwnershipControls:
+        Rules:
+        - ObjectOwnership: "BucketOwnerEnforced"
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - BucketKeyEnabled: true
+          ServerSideEncryptionByDefault:
+            SSEAlgorithm: "AES256"
+  CodeArtifactDomainDomaincchinothai:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeArtifact::Domain"
+    DeletionPolicy: "Delete"
+    Properties:
+      DomainName: "cchinothai"
+  CodeStarConnectionsConnectionConnection9e6e4fe16ac44c28aafe249372c4c7b8:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeStarConnections::Connection"
+    DeletionPolicy: "Delete"
+    Properties:
+      ConnectionName: "nextwork-devops-cicd"
+      ProviderType: "GitHub"
+      Tags: []
+  IAMRoleCodebuildcchinothaidevopscicdservicerole:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/service-role/"
+      MaxSessionDuration: 3600
+      RoleName: "codebuild-cchinothai-devops-cicd-service-role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            Service: "codebuild.amazonaws.com"
+  IAMManagedPolicyPolicyserviceroleCodeBuildBasePolicycchinothaidevopscicduseast2:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Delete"
+    DependsOn: "IAMRoleCodebuildcchinothaidevopscicdservicerole"
+    Properties:
+      ManagedPolicyName: "CodeBuildBasePolicy-cchinothai-devops-cicd-us-east-2"
+      Path: "/service-role/"
+      Description: "Policy used in trust relationship with CodeBuild"
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource:
+          - "arn:aws:logs:us-east-2:765929771952:log-group:/aws/codebuild/cchinothai-devops-cicd"
+          - "arn:aws:logs:us-east-2:765929771952:log-group:/aws/codebuild/cchinothai-devops-cicd:*"
+          Action:
+          - "logs:CreateLogGroup"
+          - "logs:CreateLogStream"
+          - "logs:PutLogEvents"
+          Effect: "Allow"
+        - Resource:
+          - "arn:aws:s3:::codepipeline-us-east-2-*"
+          Action:
+          - "s3:PutObject"
+          - "s3:GetObject"
+          - "s3:GetObjectVersion"
+          - "s3:GetBucketAcl"
+          - "s3:GetBucketLocation"
+          Effect: "Allow"
+        - Resource:
+          - "arn:aws:s3:::s3-devops-cicd-cchinothai"
+          - "arn:aws:s3:::s3-devops-cicd-cchinothai/*"
+          Action:
+          - "s3:PutObject"
+          - "s3:GetBucketAcl"
+          - "s3:GetBucketLocation"
+          Effect: "Allow"
+        - Resource:
+          - "arn:aws:codebuild:us-east-2:765929771952:report-group/cchinothai-devops-cicd-*"
+          Action:
+          - "codebuild:CreateReportGroup"
+          - "codebuild:CreateReport"
+          - "codebuild:UpdateReport"
+          - "codebuild:BatchPutTestCases"
+          - "codebuild:BatchPutCodeCoverages"
+          Effect: "Allow"
+      Roles:
+      - "codebuild-cchinothai-devops-cicd-service-role"
+      Users: []
+  CodeArtifactRepositoryRepositorycchinothaimavencentralstore:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeArtifact::Repository"
+    DeletionPolicy: "Delete"
+    Properties:
+      RepositoryName: "maven-central-store"
+      Description: "Provides Maven artifacts from Maven Central Repository."
+      ExternalConnections:
+      - "public:maven-central"
+      DomainName:
+        Fn::GetAtt:
+        - "CodeArtifactDomainDomaincchinothai"
+        - "Name"
+  IAMInstanceProfileEC2instancecchinothaicicd:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::InstanceProfile"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/"
+      Roles:
+      - Ref: "IAMRoleEC2instancecchinothaicicd"
+  IAMManagedPolicyPolicycodeartifactnextworkconsumerpolicy:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Delete"
+    DependsOn: "IAMRoleEC2instancecchinothaicicd"
+    Properties:
+      ManagedPolicyName: "codeartifact-nextwork-consumer-policy"
+      Path: "/"
+      Description: "Policy for EC2 instances to access CodeArtifact"
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource: "*"
+          Action:
+          - "codeartifact:GetAuthorizationToken"
+          - "codeartifact:GetRepositoryEndpoint"
+          - "codeartifact:ReadFromRepository"
+          Effect: "Allow"
+        - Condition:
+            StringEquals:
+              sts:AWSServiceName: "codeartifact.amazonaws.com"
+          Resource: "*"
+          Action: "sts:GetServiceBearerToken"
+          Effect: "Allow"
+      Users: []
+  IAMRoleNextWorkCodeDeployRole:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/"
+      ManagedPolicyArns:
+      - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+      MaxSessionDuration: 3600
+      RoleName: "NextWorkCodeDeployRole"
+      Description: "Allows CodeDeploy to call AWS services such as Auto Scaling on\
+        \ your behalf. "
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            Service: "codedeploy.amazonaws.com"
+          Sid: ""
+  IAMManagedPolicyPolicyserviceroleCodeBuildCodeConnectionsSourceCredentialsPolicycchinothaidevopscicduseast2765929771952:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Delete"
+    DependsOn: "IAMRoleCodebuildcchinothaidevopscicdservicerole"
+    Properties:
+      ManagedPolicyName: "CodeBuildCodeConnectionsSourceCredentialsPolicy-cchinothai-devops-cicd-us-east-2-765929771952"
+      Path: "/service-role/"
+      Description: "Policy used in trust relationship with CodeBuild"
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource:
+          - "arn:aws:codestar-connections:us-east-2:765929771952:connection/9e6e4fe1-6ac4-4c28-aafe-249372c4c7b8"
+          - "arn:aws:codeconnections:us-east-2:765929771952:connection/9e6e4fe1-6ac4-4c28-aafe-249372c4c7b8"
+          Action:
+          - "codestar-connections:GetConnectionToken"
+          - "codestar-connections:GetConnection"
+          - "codeconnections:GetConnectionToken"
+          - "codeconnections:GetConnection"
+          - "codeconnections:UseConnection"
+          Effect: "Allow"
+      Roles:
+      - "codebuild-cchinothai-devops-cicd-service-role"
+      Users: []
+  CodeDeployApplicationCchinothaidevopscicd:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeDeploy::Application"
+    DeletionPolicy: "Delete"
+    Properties:
+      ApplicationName: "cchinothai-devops-cicd"
+      ComputePlatform: "Server"
+  IAMRoleEC2instancecchinothaicicd:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Delete"
+    Properties:
+      Path: "/"
+      MaxSessionDuration: 3600
+      RoleName: "EC2-instance-cchinothai-cicd"
+      Description: "Allows EC2 instances to access services related to cchinothai's\
+        \ CI/CD pipeline project"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            Service: "ec2.amazonaws.com"
+  CodeArtifactRepositoryRepositorycchinothairepositorycchinothaidevopscicd:
+    UpdateReplacePolicy: "Delete"
+    Type: "AWS::CodeArtifact::Repository"
+    DeletionPolicy: "Delete"
+    Properties:
+      DomainName:
+        Fn::GetAtt:
+        - "CodeArtifactDomainDomaincchinothai"
+        - "Name"
+      Upstreams:
+      - Fn::GetAtt:
+        - "CodeArtifactRepositoryRepositorycchinothaimavencentralstore"
+        - "Name"
+      RepositoryName: "repository-cchinothai-devops-cicd"
+  CodeBuild00nextworkwebcloudformation00:
+    Type: AWS::CodeBuild::Project
+    DependsOn:
+      - "IAMRoleCodebuildcchinothaidevopscicdservicerole"
+      - "S3BucketS3devopscicdcchinothai"
+    Properties:
+      Name: nextwork-devops-cicd
+      Description: Build project for NextWork web application
+      Source:
+        Type: GITHUB
+        Location: !Sub "https://github.com/${GitHubRepoOwner}/${GitHubRepo}"
+        BuildSpec: buildspec.yml
+      Artifacts:
+        Type: S3
+        Name: nextwork-web-build.zip
+        Packaging: ZIP
+        Location: !Ref S3BucketS3devopscicdcchinothai
+        Path: /builds
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:corretto8
+      ServiceRole: !GetAtt IAMRoleCodebuildcchinothaidevopscicdservicerole.Arn
+      LogsConfig:
+        CloudWatchLogs:
+          GroupName: /aws/codebuild/nextwork-devops-cicd
+          Status: ENABLED
+          StreamName: webapp
+  CodeDeployDeploymentGroup00nextworkwebdeploygroupcloudformation00:
+    Type: AWS::CodeDeploy::DeploymentGroup
+    DependsOn:
+      - "IAMRoleNextWorkCodeDeployRole"
+      - "CodeDeployApplicationCchinothaidevopscicd"
+    Properties:
+      ApplicationName: !Ref CodeDeployApplicationCchinothaidevopscicd
+      ServiceRoleArn: !GetAtt IAMRoleNextWorkCodeDeployRole.Arn
+      DeploymentGroupName: nextwork-devops-cicd-deploymentgroup
+      DeploymentConfigName: CodeDeployDefault.AllAtOnce
+      Ec2TagFilters:
+        - Key: role
+          Type: KEY_AND_VALUE
+          Value: webserver
+      AutoScalingGroups: []
+
+
