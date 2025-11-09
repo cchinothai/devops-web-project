@@ -1,8 +1,5 @@
-<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
 
 # Connect a GitHub Repo with AWS
-
-**Project Link:** [View Project](http://learn.nextwork.org/projects/aws-devops-github)
 
 **Author:** Cody Chinothai  
 **Email:** cchinothai@gmail.com
@@ -120,10 +117,4 @@ We set up the personal access token within our github account settings
 
 ![Image](http://learn.nextwork.org/enthusiastic_turquoise_radiant_monstera_deliciosa/uploads/aws-devops-github_6becb2bc)
 
----
 
-## Setting up a READMe file
-
----
-
----
