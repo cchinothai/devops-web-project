@@ -1,8 +1,4 @@
-<img src="https://cdn.prod.website-files.com/677c400686e724409a5a7409/6790ad949cf622dc8dcd9fe4_nextwork-logo-leather.svg" alt="NextWork" width="300" />
-
 # Infrastructure as Code with CloudFormation
-
-**Project Link:** [View Project](http://learn.nextwork.org/projects/aws-devops-cloudformation-updated)
 
 **Author:** Cody Chinothai  
 **Email:** cchinothai@gmail.com
