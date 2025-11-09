@@ -1,32 +1,30 @@
 <settings>
 <servers>
   <server>
-    <id>cchinothai-codeartifact-devops-cicd</id>
+    <id>cchinothai-repository-cchinothai-devops-cicd</id>
     <username>aws</username>
     <password>${env.CODEARTIFACT_AUTH_TOKEN}</password>
   </server>
 </servers>
-
 <profiles>
   <profile>
-    <id>cchinothai-codeartifact-devops-cicd</id>
+    <id>cchinothai-repository-cchinothai-devops-cicd</id>
     <activation>
       <activeByDefault>true</activeByDefault>
     </activation>
     <repositories>
       <repository>
-        <id>cchinothai-codeartifact-devops-cicd</id>
-        <url>https://cchinothai-765929771952.d.codeartifact.us-east-2.amazonaws.com/maven/codeartifact-devops-cicd/</url>
+        <id>cchinothai-repository-cchinothai-devops-cicd</id>
+        <url>https://cchinothai-765929771952.d.codeartifact.us-east-2.amazonaws.com/maven/repository-cchinothai-devops-cicd/</url>
       </repository>
     </repositories>
   </profile>
 </profiles>
-
 <mirrors>
   <mirror>
-    <id>cchinothai-codeartifact-devops-cicd</id>
-    <name>cchinothai-codeartifact-devops-cicd</name>
-    <url>https://cchinothai-765929771952.d.codeartifact.us-east-2.amazonaws.com/maven/codeartifact-devops-cicd/</url>
+    <id>cchinothai-repository-cchinothai-devops-cicd</id>
+    <name>cchinothai-repository-cchinothai-devops-cicd</name>
+    <url>https://cchinothai-765929771952.d.codeartifact.us-east-2.amazonaws.com/maven/repository-cchinothai-devops-cicd/</url>
     <mirrorOf>*</mirrorOf>
   </mirror>
 </mirrors>
