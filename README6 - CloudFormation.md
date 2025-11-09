@@ -5,10 +5,6 @@
 
 ---
 
-![Image](http://learn.nextwork.org/enthusiastic_turquoise_radiant_monstera_deliciosa/uploads/aws-devops-cloudformation-updated_bd8b836b)
-
----
-
 ## Introducing Today's Project!
 
 In this part of the project, we'll generate an infrastructure as code template using CloudFormation to deploy our resources. 
